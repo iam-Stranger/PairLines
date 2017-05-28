@@ -1,4 +1,4 @@
-package by.htp.sphere;
+package by.htp.shape;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
