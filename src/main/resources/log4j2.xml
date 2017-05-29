@@ -6,7 +6,7 @@
                 <Pattern pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
             </PatternLayout>
         </Console>
-        <File name="File" fileName="resources/app-log.log">
+        <File name="File" fileName="logs/app-log.log">
             <PatternLayout>
                 <Pattern pattern="%d{MM.dd.yyyy HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
             </PatternLayout>

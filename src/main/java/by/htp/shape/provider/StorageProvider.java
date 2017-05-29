@@ -5,6 +5,8 @@ import by.htp.shape.entity.PairLines;
 import by.htp.shape.entity.PairLinesData;
 import by.htp.shape.service.DataService;
 import by.htp.shape.service.ServiceFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,8 @@ import java.util.Map;
 public class StorageProvider implements Observer {
 
     private static final StorageProvider instance = new StorageProvider();
+
+    private Logger logger = LogManager.getLogger(StorageProvider.class.getName());
 
     private HashMap<PairLines, PairLinesData> storageMap = new HashMap<PairLines, PairLinesData>();
 
@@ -58,6 +62,7 @@ public class StorageProvider implements Observer {
             // calculate PairLinesData
             pairLines.attach(this);
             storageMap.put(pairLines, pairLinesData);
+            logger.error("Add: "+pairLines.toString());
     }
 
     private PairLinesData getPairLinesDataById(int id) {

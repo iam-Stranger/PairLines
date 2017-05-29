@@ -4,6 +4,9 @@ import by.htp.shape.entity.Line;
 import by.htp.shape.entity.PairLines;
 import by.htp.shape.entity.Point;
 import by.htp.shape.provider.StorageProvider;
+import by.htp.shape.reader.DataReader;
+
+import java.util.ArrayList;
 
 
 public class App {
@@ -23,19 +26,26 @@ public class App {
         PairLines pL0 = storageProvider.getPairLinesById(0);
         PairLines pL1 = storageProvider.getPairLinesById(1);
 
-        System.out.println(pL0);
+        //System.out.println(pL0);
 
         pL0.setFirst(new Point(2,2), new Point(4,2));
         pL0.setSecond(new Point(2,2), new Point(3,4));
 
-        System.out.println(pL1);
+        //System.out.println(pL1);
 
         //pL1.detach(storageProvider);
 
         pL1.setFirst(new Point(7,1), new Point(4,2));
         pL1.setSecond(new Point(2,2), new Point(7,1));
 
-        System.out.println(pL1);
+       // System.out.println(pL1);
+
+//        DataReader dataReader = new DataReader();
+//        ArrayList<String> list = (ArrayList<String>) dataReader.readFile("files/data.txt");
+//
+//        for (String item : list){
+//            System.out.println(item);
+//        }
 
 
     }
