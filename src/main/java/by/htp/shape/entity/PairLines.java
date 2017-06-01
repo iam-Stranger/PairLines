@@ -1,20 +1,23 @@
 package by.htp.shape.entity;
 
-import by.htp.shape.provider.Observer;
+import by.htp.shape.creator.IdGenerator;
+import by.htp.shape.observer.Observable;
+import by.htp.shape.observer.Observer;
 
 import java.util.ArrayList;
 
 public class PairLines implements Observable {
-    private int id;
+    private long pairLinesId;
     private Line first;
     private Line second;
     private ArrayList<Observer> observerList = new ArrayList<Observer>();
 
     public PairLines() {
+        this.pairLinesId = IdGenerator.generateNewId();
     }
 
-    public PairLines(int id, Line first, Line second) {
-        this.id = id;
+    public PairLines(Line first, Line second) {
+        this();
         this.first = first;
         this.second = second;
     }
@@ -27,7 +30,7 @@ public class PairLines implements Observable {
     @Override
     public void detach(Observer observer) {
         int i = observerList.indexOf(observer);
-        if (i >= 0){
+        if (i >= 0) {
             observerList.remove(i);
         }
 
@@ -35,18 +38,17 @@ public class PairLines implements Observable {
 
     @Override
     public void notifyObservers() {
-        for (Observer item : observerList) {
-            Observer observer = (Observer) item;
+        for (Observer observer : observerList) {
             observer.update(this);
         }
     }
 
-    public int getId() {
-        return id;
+    public long getId() {
+        return pairLinesId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(long pairLinesId) {
+        this.pairLinesId = pairLinesId;
     }
 
     public Line getFirst() {
@@ -89,7 +91,7 @@ public class PairLines implements Observable {
 
     @Override
     public String toString() {
-        return "PairLines{" +
+        return "PairLines{" + pairLinesId + " " +
                 "first=" + first +
                 ", second=" + second +
                 '}';

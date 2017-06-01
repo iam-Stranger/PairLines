@@ -3,6 +3,8 @@ package by.htp.shape.provider;
 
 import by.htp.shape.entity.PairLines;
 import by.htp.shape.entity.PairLinesData;
+import by.htp.shape.exception.PairLinesException;
+import by.htp.shape.observer.Observer;
 import by.htp.shape.service.DataService;
 import by.htp.shape.service.ServiceFactory;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +17,7 @@ public class StorageProvider implements Observer {
 
     private static final StorageProvider instance = new StorageProvider();
 
-    private Logger logger = LogManager.getLogger(StorageProvider.class.getName());
+    private Logger logger = LogManager.getLogger();
 
     private HashMap<PairLines, PairLinesData> storageMap = new HashMap<PairLines, PairLinesData>();
 
@@ -31,19 +33,24 @@ public class StorageProvider implements Observer {
         ServiceFactory serviceFactoryObject = ServiceFactory.getInstance();
         DataService dataService = serviceFactoryObject.getDataService();
 
-        int id = observed.getId();
+        long currentId = observed.getId();
         double angle = 0;
         double distance = 0;
 
-        PairLinesData pairLinesData = getPairLinesDataById(id);
-        angle = dataService.calculateAngle(observed.getFirst(), observed.getSecond());
-        distance = dataService.calculateDistance(observed.getFirst(), observed.getSecond());
+        PairLinesData pairLinesData = findPairLinesDataById(currentId);
 
-        pairLinesData.setAngle(angle);
-        pairLinesData.setDistance(distance);
+        try {
+            angle = dataService.calculateAngle(observed.getFirst(), observed.getSecond());
+            distance = dataService.calculateDistance(observed.getFirst(), observed.getSecond());
+            pairLinesData.setAngle(angle);
+            pairLinesData.setDistance(distance);
+
+        } catch (PairLinesException e) {
+            logger.error("PairLinesData has not been updated " + e);
+        }
     }
 
-    public PairLines getPairLinesById(int id) {
+    public PairLines findPairLinesById(long id) {
         PairLines pairLines = null;
 
         for (Map.Entry<PairLines, PairLinesData> entry : storageMap.entrySet()) {
@@ -55,17 +62,7 @@ public class StorageProvider implements Observer {
         return pairLines;
     }
 
-    public void addRecord(PairLines pairLines){
-            int id = getNewPairLinesID();
-            pairLines.setId(id);
-            PairLinesData pairLinesData = new PairLinesData();
-            // calculate PairLinesData
-            pairLines.attach(this);
-            storageMap.put(pairLines, pairLinesData);
-            logger.error("Add: "+pairLines.toString());
-    }
-
-    private PairLinesData getPairLinesDataById(int id) {
+    public PairLinesData findPairLinesDataById(long id) {
         PairLinesData pairLinesData = null;
 
         for (Map.Entry<PairLines, PairLinesData> entry : storageMap.entrySet()) {
@@ -77,11 +74,10 @@ public class StorageProvider implements Observer {
         return pairLinesData;
     }
 
-    private int getNewPairLinesID(){
-        int id;
-        id = storageMap.size();
-
-        return id;
+    public void addRecord(PairLines pairLines){
+            PairLinesData pairLinesData = new PairLinesData();
+            pairLines.attach(this);
+            storageMap.put(pairLines, pairLinesData);
     }
 
 }

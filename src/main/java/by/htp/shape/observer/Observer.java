@@ -1,4 +1,4 @@
-package by.htp.shape.provider;
+package by.htp.shape.observer;
 
 import by.htp.shape.entity.PairLines;
 

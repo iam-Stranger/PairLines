@@ -1,6 +1,4 @@
-package by.htp.shape.entity;
-
-import by.htp.shape.provider.Observer;
+package by.htp.shape.observer;
 
 public interface Observable {
     void attach(Observer observer);
